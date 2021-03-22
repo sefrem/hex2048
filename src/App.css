@@ -4,6 +4,9 @@
   --button-bg-color: rgb(102, 102, 255);
   --select-bg-color: rgb(249, 245, 241);
   --select-border-color: rgb(233, 229, 225);
+  --score-bg-color: #bbada0;
+  --score-title-color: #eee4da;
+  --score-last-color: rgba(119, 110, 101, 0.9);
   --cell-shape: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
   --white: #fff;
 }

@@ -52,6 +52,7 @@ class Store {
   grid = generateGridCoordinates(this.gridRadius);
   serverUrl = urls.remoteUrl;
   total = 0;
+  lastScore = 0;
   best = +localStorage.getItem("hex2048Best") || 0;
 
   fetchInitialCells = async () => {
@@ -165,6 +166,7 @@ class Store {
   setCell = (coords, value) => this.grid.set(coords, value);
 
   setTotal = (value) => {
+    this.lastScore = value;
     this.total += value;
     if (this.total > this.best) {
       this.best = this.total;
