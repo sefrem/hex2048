@@ -1,7 +1,6 @@
-import { makeAutoObservable, reaction, toJS } from "mobx";
+import { makeAutoObservable, reaction } from "mobx";
 import api from "../api/api";
 import { cubeToDouble, generateGridCoordinates } from "../utils";
-import React from "react";
 
 const moveHandlers = {
   leftTop: (v) => +v - 1,

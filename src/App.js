@@ -12,7 +12,6 @@ function App() {
       <Select />
       <Score />
       <Grid />
-
       <Status />
     </div>
   );
