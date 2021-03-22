@@ -1,3 +1,10 @@
 .status {
     align-self: flex-start;
+    font-size: 18px;
+}
+
+.info {
+    margin-top: 10px;
+    font-style: italic;
+    font-size: 16px;
 }

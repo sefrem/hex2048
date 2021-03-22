@@ -1,14 +1,11 @@
 
 :root {
   --cell-bg-color: #B5A89B;
-  --cell-bg-plain: #fff;
-  --cell-shape: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
   --button-bg-color: rgb(102, 102, 255);
-}
-
-body {
-  display: flex;
-  justify-content: center;
+  --select-bg-color: rgb(249, 245, 241);
+  --select-border-color: rgb(233, 229, 225);
+  --cell-shape: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  --white: #fff;
 }
 
 .app{

@@ -1,8 +1,9 @@
-import { makeAutoObservable, reaction } from "mobx";
+import { makeAutoObservable, reaction, toJS } from "mobx";
 import api from "../api/api";
 import { cubeToDouble, generateGridCoordinates } from "../utils";
+import React from "react";
 
-const moveFunctions = {
+const moveHandlers = {
   leftTop: (v) => +v - 1,
   rightBottom: (v) => +v + 1,
   rightTop: (v, i) => (i === 0 ? +v + 1 : +v - 1),
@@ -51,6 +52,8 @@ class Store {
   gridRadius = +window.location.hash[window.location.hash.length - 1];
   grid = generateGridCoordinates(this.gridRadius);
   serverUrl = urls.remoteUrl;
+  total = 0;
+  best = +localStorage.getItem("hex2048Best") || 0;
 
   fetchInitialCells = async () => {
     const response = await api.fetchCells(this.serverUrl, this.gridRadius);
@@ -91,41 +94,61 @@ class Store {
   initializeNewGrid = (gridRadius) => {
     this.gridRadius = gridRadius;
     this.grid = generateGridCoordinates(gridRadius);
+    this.total = 0;
     this.fetchInitialCells();
   };
 
   moveGrid = (direction) => {
     let move = true;
     let i = 0;
-    const movedCells = [];
+    const movedCells = new Set();
 
     while (move) {
       move = false;
 
       for (let [key, value] of this.grid) {
         if (value.value) {
-          const newCoord = key
+          const newCoords = key
             .split(",")
-            .map(moveFunctions[direction])
+            .map(moveHandlers[direction])
             .join(",");
-          const newHex = this.grid.get(newCoord);
+          const newHex = this.grid.get(newCoords);
 
           if (!newHex) continue;
           if (newHex.value > 0 && newHex.value !== value.value) continue;
-          if (movedCells.includes(key)) continue;
 
-          this.setCell(newCoord, {
-            ...newHex,
-            value: newHex.value + value.value,
-          });
-          this.setCell(key, { ...value, value: 0 });
+          if (movedCells.has(key)) {
+            if (!newHex.value) {
+              movedCells.delete(key);
 
-          if (newHex.value && value.value) {
-            movedCells.push(key);
-            movedCells.push(newCoord);
+              this.setCell(newCoords, {
+                ...newHex,
+                value: value.value,
+              });
+              this.setCell(key, { ...value, value: 0 });
+              movedCells.add(newCoords);
+              move = true;
+            }
+          } else {
+            const newValue = newHex.value + value.value;
+            this.setCell(newCoords, {
+              ...newHex,
+              value: newValue,
+            });
+            this.setCell(key, { ...value, value: 0 });
+
+            if (newHex.value && value.value) {
+              movedCells.add(key);
+              movedCells.add(newCoords);
+            }
+
+            if (newValue > 2 && newHex.value && value.value) {
+              this.setTotal(newValue);
+            }
+
+            move = true;
+            i++;
           }
-          move = true;
-          i++;
         }
       }
     }
@@ -141,6 +164,14 @@ class Store {
   };
 
   setCell = (coords, value) => this.grid.set(coords, value);
+
+  setTotal = (value) => {
+    this.total += value;
+    if (this.total > this.best) {
+      this.best = this.total;
+      localStorage.setItem("hex2048Best", this.total.toString());
+    }
+  };
 
   setServer = (e) => {
     this.serverUrl =

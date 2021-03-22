@@ -11,7 +11,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: var(--cell-bg-plain);
+    background: var(--white);
     clip-path: var(--cell-shape);
 }
 
@@ -24,7 +24,7 @@
 }
 
 .cell-new {
-    background: var(--cell-bg-plain);
+    background: var(--white);
     -webkit-animation: appear 100ms linear 100ms;
     -moz-animation: appear 100ms linear 100ms;
     -webkit-animation-fill-mode: both;

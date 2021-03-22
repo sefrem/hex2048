@@ -1,8 +1,8 @@
 .select {
     width: 100%;
     border-radius: 4px;
-    background-color: rgb(249, 245, 241);
-    border: 1px solid rgb(233, 229, 225);
+    background-color: var(--select-bg-color);
+    border: 1px solid var(--select-border-color);
     padding: 15px 20px;
 }
 
@@ -13,7 +13,7 @@
 .radius-button {
     background-color: var(--button-bg-color);
     border-color: var(--button-bg-color);
-    color: rgb(255, 255, 255);
+    color: var(--white);
     font-size: 16px;
     padding: 2px 10px;
     margin: 2px 5px;

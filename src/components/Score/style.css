@@ -1,0 +1,36 @@
+
+
+.score {
+    display: flex;
+    align-self: flex-end;
+    margin-top: 20px;
+}
+
+.score > div:first-child {
+    margin-right: 20px;
+
+}
+
+.score-container {
+    background: #bbada0;
+    padding-top: 5px;
+    text-align: center;
+    width:70px;
+    border-radius: 4px;
+}
+
+
+.score-title {
+    text-transform: uppercase;
+    font-size: 13px;
+    text-align: center;
+    color: #eee4da;
+}
+
+.score-value {
+    font-size: 25px;
+    line-height: 47px;
+    font-weight: bold;
+    border-radius: 3px;
+    color: white;
+}

@@ -19,10 +19,15 @@ function Status() {
   };
 
   return (
-    <div className="status">
-      <span>Game Status: </span>
-      <span data-status={setGameStatus()}>{setGameStatus()}</span>
-    </div>
+    <>
+      <div className="status">
+        <span>Game Status: </span>
+        <span data-status={setGameStatus()}>{setGameStatus()}</span>
+        {!!store.gridRadius && (
+          <div className="info">Use q, w, e, a, s, d keys for move</div>
+        )}
+      </div>
+    </>
   );
 }
 
