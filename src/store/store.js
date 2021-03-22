@@ -12,12 +12,12 @@ const moveHandlers = {
 };
 
 const keyAndDirection = {
-  q: "leftTop",
-  w: "top",
-  e: "rightTop",
-  a: "leftBottom",
-  s: "bottom",
-  d: "rightBottom",
+  81: "leftTop",
+  87: "top",
+  69: "rightTop",
+  65: "leftBottom",
+  83: "bottom",
+  68: "rightBottom",
 };
 
 const urls = {
@@ -157,7 +157,7 @@ class Store {
 
   moveListener = (e) => {
     Object.entries(keyAndDirection).forEach(([key, direction]) => {
-      if (e.key === key) {
+      if (e.keyCode === +key) {
         this.moveGrid(direction);
       }
     });
