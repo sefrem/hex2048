@@ -1,4 +1,4 @@
-import { makeAutoObservable, reaction } from "mobx";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
 import api from "../api/api";
 import {
   cubeToDouble,
@@ -109,7 +109,7 @@ class Store {
     let move = true;
     let i = 0;
     const movedCells = new Set();
-
+    let newScore = 0;
     while (move) {
       move = false;
 
@@ -150,7 +150,7 @@ class Store {
             }
 
             if (newValue > 2 && newHex.value && value.value) {
-              this.setTotal(newValue);
+              newScore += newValue;
             }
 
             move = true;
@@ -159,6 +159,11 @@ class Store {
         }
       }
     }
+    runInAction(() => (this.lastScore = newScore));
+    runInAction(() => (this.total += newScore));
+
+    this.setBest();
+
     i && this.fetchMoreCells();
   };
 
@@ -171,12 +176,6 @@ class Store {
   };
 
   setCell = (coords, value) => this.grid.set(coords, value);
-
-  setTotal = (value) => {
-    this.lastScore = value;
-    this.total += value;
-    this.setBest();
-  };
 
   setBest = () => {
     if (this.total > this.best) {
