@@ -98,6 +98,7 @@ class Store {
 
   initializeNewGrid = (gridRadius) => {
     this.total = 0;
+    this.lastScore = 0;
     this.gridRadius = gridRadius;
     this.grid = generateGridCoordinates(gridRadius);
     this.fetchInitialCells();
