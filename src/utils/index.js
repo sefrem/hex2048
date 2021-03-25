@@ -7,3 +7,4 @@ export {
   setCellOffset,
   setCellColor,
 } from "./cell";
+export { localStorageGet, localStorageSet } from "./localStorage";

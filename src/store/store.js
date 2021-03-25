@@ -1,6 +1,11 @@
 import { makeAutoObservable, reaction } from "mobx";
 import api from "../api/api";
-import { cubeToDouble, generateGridCoordinates } from "../utils";
+import {
+  cubeToDouble,
+  generateGridCoordinates,
+  localStorageGet,
+  localStorageSet,
+} from "../utils";
 
 const moveHandlers = {
   leftTop: (v) => +v - 1,
@@ -53,7 +58,7 @@ class Store {
   serverUrl = urls.remoteUrl;
   total = 0;
   lastScore = 0;
-  best = +localStorage.getItem("hex2048Best") || 0;
+  best = localStorageGet("hex2048Best")?.[this.gridRadius] || 0;
 
   fetchInitialCells = async () => {
     const response = await api.fetchCells(this.serverUrl, this.gridRadius);
@@ -92,10 +97,11 @@ class Store {
   };
 
   initializeNewGrid = (gridRadius) => {
+    this.total = 0;
     this.gridRadius = gridRadius;
     this.grid = generateGridCoordinates(gridRadius);
-    this.total = 0;
     this.fetchInitialCells();
+    this.setInitialBest();
   };
 
   moveGrid = (direction) => {
@@ -168,11 +174,26 @@ class Store {
   setTotal = (value) => {
     this.lastScore = value;
     this.total += value;
+    this.setBest();
+  };
+
+  setBest = () => {
     if (this.total > this.best) {
       this.best = this.total;
-      localStorage.setItem("hex2048Best", this.total.toString());
+
+      let best = localStorageGet("hex2048Best");
+      if (best) {
+        best[this.gridRadius] = this.total;
+      } else {
+        best = {};
+        best[this.gridRadius] = this.total;
+      }
+      localStorageSet("hex2048Best", best);
     }
   };
+
+  setInitialBest = () =>
+    (this.best = localStorageGet("hex2048Best")?.[this.gridRadius] || 0);
 
   setServer = (e) => {
     this.serverUrl =
